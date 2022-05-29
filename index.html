@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/StarWarsLogo.jpeg" alt="">
+    <!-- <input type="text" id="query" oninput="getData()"/> -->
+    <!-- <input type="text" id="query" oninput="main()"/> -->
+    <input type="text" id="query" oninput="debouncing(main,1200)" placeholder="Search Charecters"/>
+    <div id="mam"></div>
+    </div>
+    
+</body>
+</html>
+
+<style>
+        body{
+            background-image: url("https://thumbs.gfycat.com/BriefIgnorantBlackbuck-size_restricted.gif");
+        }
+        img{
+            width: 20%;
+            margin-left: 40%;
+        }
+    
+        #container{
+        display: grid;
+        gap: 20px;
+            }
+
+        #query{
+            width: 500px;
+            padding: 20px 40px 20px 40px;
+            border-radius: 16px;
+            background-color:rgb(115, 115, 115);
+            margin: auto;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        #mam{
+            position: relative;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 20px;
+        }
+
+       
+</style>
+
+<script>
+
+    let id;
+ 
+    // https://swapi.dev/api/people/?search=${query}
+
+    async function getData(){
+
+        let query= document.querySelector('#query').value;
+
+        let url=`https://swapi.dev/api/people/?search=${query}`;
+
+        let res = await fetch(url)
+
+        let data = await res.json()
+
+        console.log(data);
+
+        // append(data.results);
+        return data.results
+    }
+
+    function append(data){
+
+        let container=document.querySelector("#mam")
+         container.innerHTML=null
+
+         
+        data.forEach(function(el){
+
+            // let h1 = document.createElement("h1");
+            // h1.innerText="Name"+el.name;
+
+            let p1 = document.createElement("p");
+            p1.innerText="Birth Year : "+el.birth_year;
+
+            let p2 = document.createElement("p");
+            p2.innerText="Gender : "+el.gender;
+
+            let p3 = document.createElement("p");
+            p3.innerText="Height : "+el.height;
+
+
+            let p4 = document.createElement("p");
+            p4.innerText="Eye Color : "+el.eye_color;
+
+            let p5 = document.createElement("p");
+            p5.innerText="Mass : "+el.mass;
+
+            let p6 = document.createElement("p");
+            p6.innerText="Hair_color : "+el.hair_color;
+
+            container.append(p1,p2,p3,p4,p5,p6)
+        });      
+    }
+
+            async function main(){
+
+                let data=await getData()
+                append(data)
+
+                }
+
+             function debouncing(func,delay){
+                 if(id){
+                     clearTimeout(id);
+                 }
+                 id=setTimeout(function(){
+                     func();
+                 },delay);
+             }   
+
+    
+</script>
